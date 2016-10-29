@@ -1,3 +1,6 @@
+项目具体介绍：
+[微博话题爬取与存储分析,实战部分](https://luzhijun.github.io/2016/10/29/微博话题爬取与存储分析/#section-2)
+## 安装部署
 将项目git到本地后，请先确保以下环境已经安装：
 
 *  [scrapy](https://scrapy.org)
@@ -54,7 +57,7 @@ containerid=&containerid=100103type%3D1%26q%3D浦东租房
  
  更改日志显示级别请在[setting.py](https://github.com/luzhijun/weiboSA/blob/master/weiboZ/settings.py)中修改LOG_LEVEL，介意采用项目默认的WARNNING，否则信息会很多。
  
-**查询示例**
+## 查询示例
 
 查询当前时区的2016-10-20至今有在9号线附近租房房租不高于2000的信息。
 
