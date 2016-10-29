@@ -8,7 +8,7 @@
 执行下面命令：
 
 >mongod  
->cd weiboZ  
+>cd weiboSA
 >scrapy crawl mblogSpider 
 
 可选参数：
@@ -30,7 +30,7 @@ containerid=&containerid=100103type%3D1%26q%3D浦东租房
 &uicode=10000011  
 &next_cursor=  
 &page=  
-如果要数据库收录‘浦东租房’历史记录信息，请将[pipelines.py](https://github.com/luzhijun/weiboSA/blob/master/weiboZ/pipelines.py)第87、88行注释掉。一般如果有‘上海租房’了就不要去搜索‘浦东租房’，因为基本上有‘浦东租房’的微博都会有@‘上海租房’。
+如果要数据库收录‘浦东租房’历史记录信息，请将[pipelines.py](https://github.com/luzhijun/weiboSA/blob/master/weiboZ/pipelines.py)第87、88行注释掉。一般如果有‘上海租房’了就不要去搜索‘浦东租房’，因为基本上有‘浦东租房’的微博都会有@‘上海租房’，所以下面会出现插入重复记录错误。
 
 ```
 ➜  weiboZ git:(master) ✗ scrapy crawl mblogSpider -a num=10 -a new_url="http://m.weibo.cn/page/pageJson\?containerid\=\&containerid\=100103type%3D1%26q%3D%E6%B5%A6%E4%B8%9C%E7%A7%9F%E6%88%BF\&type\=all\&queryVal\=%E6%B5%A6%E4%B8%9C%E7%A7%9F%E6%88%BF\&luicode\=10000011\&lfid\=100103type%3D%26q%3D%E4%B8%8A%E6%B5%B7%E6%97%A0%E4%B8%AD%E4%BB%8B%E7%A7%9F%E6%88%BF\&title\=%E6%B5%A6%E4%B8%9C%E7%A7%9F%E6%88%BF\&v_p\=11\&ext\=\&fid\=100103type%3D1%26q%3D%E6%B5%A6%E4%B8%9C%E7%A7%9F%E6%88%BF\&uicode\=10000011\&next_cursor\=\&page\="

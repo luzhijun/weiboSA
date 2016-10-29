@@ -7,24 +7,23 @@ import logging
 
 
 class SearchspiderSpider(scrapy.Spider):
-    
-    name = "searchSpider"
+
+    name = "mblogSpider"
     #allowed_domains = ["http://m.weibo.cn/page/"]
     url_temp = 'http://m.weibo.cn/page/pageJson?containerid=&containerid=100103type%3D1%26q%3D%40%E4%B8%8A%E6%B5%B7%E7%A7%9F%E6%88%BF&type=all&queryVal=%40%E4%B8%8A%E6%B5%B7%E7%A7%9F%E6%88%BF&featurecode=20000180&oid=4035270175262125&luicode=20000061&lfid=4035270175262125&title=%40%E4%B8%8A%E6%B5%B7%E7%A7%9F%E6%88%BF&v_p=11&ext=&fid=100103type%3D1%26q%3D%40%E4%B8%8A%E6%B5%B7%E7%A7%9F%E6%88%BF&uicode=10000011&next_cursor=&page='
     start_urls = [
         url_temp + '1'
     ]
-    #移动版最多允许查看100页
+    # 移动版最多允许查看100页
     maxPage = 100
-    
-    def __init__(self, num=100,new_url='', *args, **kwargs):
+
+    def __init__(self, num=100, new_url='', *args, **kwargs):
         super(SearchspiderSpider, self).__init__(*args, **kwargs)
         self.num = int(num)
-        self.new_url=new_url
-        if len(self.new_url)!=0:
-            self.url_temp=self.new_url
+        self.new_url = new_url
+        if len(self.new_url) != 0:
+            self.url_temp = self.new_url
 
-    
     def etl(self, d, k, keys):
         return d[k] if k in keys and d[k] != None else 0
 
@@ -63,6 +62,7 @@ class SearchspiderSpider(scrapy.Spider):
         for item in items:
             yield item
         # 处理其余页
+        logging.warning('do other pages.')
         for i in range(2, min(self.maxPage, self.num) + 1):
             #logging.warning('do page%d' % i)
             yield scrapy.Request(self.url_temp + str(i), self.parse_other)

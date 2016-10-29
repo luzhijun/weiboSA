@@ -85,8 +85,8 @@ class MongoPipeline(object):
         # logging.warning('开始插入表%s'%self.mongo_col)
         try:
             dt = DateUtil.convert(item["created_at"])  # 时间格式化
-            if dt <= self.recent:  # 数据库中已经有或者太老，不再插入
-                return item
+            #if dt <= self.recent:  # 数据库中已经有或者太老，不再插入
+            #    return item
             item["created_at"] = dt
             admin, price, tag = self.extract(
                 item['text'], self.tAdmin, self.tPrice, self.tTag)
