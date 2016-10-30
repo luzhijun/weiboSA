@@ -1,5 +1,7 @@
 项目具体介绍：
 [微博话题爬取与存储分析,实战部分](https://luzhijun.github.io/2016/10/29/微博话题爬取与存储分析/#section-2)
+
+
 ## 安装部署
 将项目git到本地后，请先确保以下环境已经安装：
 
@@ -7,6 +9,8 @@
 *  [datrie](https://github.com/pytries/datrie)
 *  [pymongo](https://github.com/mongodb/mongo-python-driver)
 *  [mongoDB](https://www.mongodb.org)
+
+自己的运行环境是mac10.12，python3.5，应该向下兼容没有测试。windows的童鞋装scrapy比较麻烦，建议安装了anaconda后比较方便。
 
 执行下面命令：
 
