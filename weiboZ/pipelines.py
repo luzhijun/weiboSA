@@ -24,13 +24,15 @@ class JsonPipeline(object):
     def process_item(self, item, spider):
         try:
             line = json.dumps(dict(item), ensure_ascii=False, indent=2) + ',\n'
+            logging.warning(line)
             self.file.write(line)
             return item
         except Exception:
+            logging.warning('写json出错')
             self.file.close()
 
 
-class MongoPipeline(object):
+class weiboMongoPipeline(object):
     def __init__(self, mongo_uri, mongo_db, mongo_col):
         self.mongo_uri = mongo_uri
         self.mongo_db = mongo_db
@@ -145,3 +147,38 @@ class MongoPipeline(object):
             else:
                 i += 1
         return list(location), list(price), rent
+
+
+class dbMongoPipeline(weiboMongoPipeline,):
+    def __init__(self, mongo_uri, mongo_db, mongo_col):
+        super(dbMongoPipeline, self).__init__(mongo_uri, mongo_db, mongo_col)
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        logging.warning('生成MongoPipeline对象')
+        return cls(
+            crawler.settings.get('MONGO_URI'),
+            crawler.settings.get('MONGO_DATABASE')['db'],
+            crawler.settings.get('MONGO_DATABASE')['col']
+        )
+
+    def process_item(self, item, spider):
+        #collection_name = item.__class__.__name__
+        # logging.warning('开始插入表%s'%self.mongo_col)
+        try:
+            dt = DateUtil.convert(item["created_at"])  # 时间格式化
+            if dt <= self.recent:  # 数据库中已经有或者太老，不再插入
+                return item
+            # 以标题作为唯一性依据
+            item["mblogid"] = DateUtil.calc_md5(item['title'])
+            item["created_at"] = dt
+            admin, price, tag = self.extract(
+                item['text'] + item['title'], self.tAdmin, self.tPrice, self.tTag)
+            item["admin"] = admin
+            item["price"] = price
+            item["tag"] = tag
+
+            self.db[self.mongo_col].insert(dict(item))
+            return item
+        except Exception:
+            logging.error('编号为:%s的数据插入异常' % item['mblogid'])
