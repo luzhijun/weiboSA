@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import json
-from w3lib.html import remove_tags
+from w3lib.html import remove_tags,replace_escape_chars
 from weiboZ.items import WeibozItem
 import logging
 
@@ -46,7 +46,8 @@ class SearchspiderSpider(scrapy.Spider):
                     item['like_count'] = self.etl(mblog, 'like_count', keys)
                     item['reposts_count'] = self.etl(
                         mblog, 'reposts_count', keys)
-                    item['text'] = remove_tags(mblog['text'])
+                    item['text'] = replace_escape_chars(remove_tags(mblog['text']),
+                        which_ones=('\n', '\t', '\r',' '))
                     item['scheme'] = it['scheme']
                     item['user'] = {
                         'name': mblog['user']['screen_name'],
@@ -62,7 +63,6 @@ class SearchspiderSpider(scrapy.Spider):
         for item in items:
             yield item
         # 处理其余页
-        logging.warning('do other pages.')
         for i in range(2, min(self.maxPage, self.num) + 1):
             #logging.warning('do page%d' % i)
             yield scrapy.Request(self.url_temp + str(i), self.parse_other)
