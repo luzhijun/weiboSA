@@ -74,7 +74,8 @@ class MongoPipeline(object):
             recent_row = list(self.db[self.mongo_col].find(projection=['created_at', '_id'],
                                                            limit=1, sort=[('created_at', pymongo.DESCENDING)]))
             self.recent = recent_row[0]['created_at']  # 最新时间
-            logging.warning("允许插入数据的时间大于%s"%(self.recent+datetime.timedelta(hours=8)).__str__())
+            logging.warning("允许插入数据的时间大于%s" % (
+                self.recent + datetime.timedelta(hours=8)).__str__())
 
     def close_spider(self, spider):
         logging.warning('结束spider')
@@ -98,12 +99,12 @@ class MongoPipeline(object):
             return item
         except Exception:
             logging.error('编号为:%s的数据插入异常' % item['mblogid'])
-            #logging.error(item['text'])
+            # logging.error(item['text'])
 
     def extract(self, text, tAdmin, tPrice, tTag):
         i = 0
-        location = []  # 存储行政区
-        price = []  # 存储价格
+        location = set()  # 存储行政区
+        price = set()  # 存储价格
         rent = True  # 默认为出租信息
         while i < len(text):
             if tPrice.has_keys_with_prefix(text[i]):  # 优先匹配价格
@@ -114,9 +115,9 @@ class MongoPipeline(object):
                     i += 1
                 if text[j:i] in tPrice.keys(text[j:i]):  # 价格转换成数字
                     if ord(text[j]) > 60:
-                        price.append(tPrice[text[j:i]])
+                        price.add(tPrice[text[j:i]])
                     else:
-                        price.append(int(text[j:i]))
+                        price.add(int(text[j:i]))
                     continue
                 else:  # 未匹配，去尝试匹配地点
                     i = j
@@ -127,7 +128,7 @@ class MongoPipeline(object):
                 while i < len(text) and tAdmin.has_keys_with_prefix(text[j:i + 1]):
                     i += 1
                 if text[j:i] in tAdmin.keys(text[j:i]):
-                    location.append(text[j:i])
+                    location.add(text[j:i])
                     continue
                 else:  # 未匹配，去尝试匹配租房还是求房
                     i = j
@@ -143,4 +144,4 @@ class MongoPipeline(object):
                     i = j + 1
             else:
                 i += 1
-        return location, price, rent
+        return list(location), list(price), rent
