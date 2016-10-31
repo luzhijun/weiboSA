@@ -28,7 +28,7 @@ class dbrentSpider(CrawlSpider):
         if len(self.new_url) != 0:
             self.url_temp = self.new_url
         self.start_urls = [self.url_temp +
-                           str(i) for i in range(min(int(num), self.maxPage))]
+                           str(i * 25) for i in range(0, min(int(num), self.maxPage))]
 
     def parse_item(self, response):
         DI = DoubanItem()
