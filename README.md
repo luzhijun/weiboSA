@@ -16,12 +16,12 @@
 
 >mongod  
 >cd weiboSA
->scrapy crawl mblogSpider 
+>scrapy crawl mblogSpider/dbSpider
 
 可选参数：
  > scrapy crawl mblogSpider  -a num=     -a new_url= 
  
- - num 代表爬取页面数，默认为100页，目前只支持100页。
+ - num 代表爬取页面数，默认为100页。
  - new_url 默认为搜索移动端‘上海租房’返回的json文件url，如果要添加其他上海租房信息，比如浦东租房，请自行在Chrome中找到请求的json地址，例如：
  - 
 http://m.weibo.cn/page/pageJson?     
@@ -106,4 +106,11 @@ db.house.find(
 	"created_at" : ISODate("2016-10-20T09:57:00Z")
 }
 ```
+
+## 更新
+* v1.1
+	* 新增豆瓣小组爬取与存储(以标题MD5为主键防止重复)
+	* 新增agent随机切换
+	* 新增随机静态ip代理（爬了近万个代理ip具有时效性，找几个可行的ip放进setting中）
+	* 下载延迟设定为1，延迟越小越容易403错误（被豆瓣识别为爬虫）
 
