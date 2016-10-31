@@ -115,12 +115,25 @@ db.house.find(
 	* 下载延迟设定为1，延迟越小越容易403错误（被豆瓣识别为爬虫）
 
 ## QA
-1. Q1:怎么单独查找豆瓣的数据。  
+* Q1:怎么单独查找豆瓣的数据。  
 	A1:豆瓣数据相比微博多了个title字段，只要查找title不为空的即是豆瓣数据。例如：  
 	```db.house.find({title:{$ne:null}}).count()
 	```
-2. Q2: 想要爬取历史数据，但默认数据库只增加最新数据。   
+* Q2: 想要爬取历史数据，但默认数据库只增加最新数据。   
 	A2: 数据库有两重机制防止重复，第一个就是根据时间，同一地址的爬虫不会爬取老的数据；第二个是主键约束，比如		豆瓣上相同的标题的帖子会被认为重复。要想爬取历史数据需要把[pipliens.py](https://github.com/luzhijun/weiboSA/blob/master/weiboZ/pipelines.py)中的process_item两行时间约束代码注释。
-3. Q3: 代理地址不可用。  
+*  Q3: 代理地址不可用。  
 	A3: 为防止BAN，提供静态代理地址，但有些地址具有时效性，推荐去找最新的代理地址，或者扩展为动态代理地址。
 
+* Q4: 为什么抓了豆瓣的数据数据库中不存储。  
+	A4: 确认setting设置`ITEM_PIPELINES`为`weiboZ.pipelines.dbMongoPipeline`,并且数据库中豆瓣数据不是最新的。如果还有问题，日志级别设置为INFO看下爬虫统计结果，如下：
+	
+	```json
+ 'downloader/request_bytes': 119366,
+ 'downloader/request_count': 100,
+ 'downloader/request_method_count/GET': 100,
+ 'downloader/response_bytes': 481768,
+ 'downloader/response_count': 100,
+ 'downloader/response_status_count/200': 100,
+ 'finish_reason': 'finished',
+	```
+	以上是完全抓取100页豆瓣的统计结果，若response_status_count/403，请设置`DOWNLOAD_DELAY `大于1，或者换ip代理。
