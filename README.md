@@ -120,9 +120,14 @@ db.house.find(
 	```db.house.find({title:{$ne:null}}).count()
 	```
 * Q2: 想要爬取历史数据，但默认数据库只增加最新数据。   
-	A2: 数据库有两重机制防止重复，第一个就是根据时间，同一地址的爬虫不会爬取老的数据；第二个是主键约束，比如		豆瓣上相同的标题的帖子会被认为重复。要想爬取历史数据需要把[pipliens.py](https://github.com/luzhijun/weiboSA/blob/master/weiboZ/pipelines.py)中的process_item两行时间约束代码注释。
+	A2: 数据库有两重机制防止重复，第一个就是根据时间，同一地址的爬虫不会爬取老的数据；第二个是主键约束，比如		豆瓣上相同作者和标题的帖子会被认为重复。要想爬取历史数据需要把[pipliens.py](https://github.com/luzhijun/weiboSA/blob/master/weiboZ/pipelines.py)中的process_item两行时间约束代码注释。
 *  Q3: 代理地址不可用。  
-	A3: 为防止BAN，提供静态代理地址，但有些地址具有时效性，推荐去找最新的代理地址，或者扩展为动态代理地址。
+	A3: 为防止BAN，提供静态代理地址，但有些地址具有时效性，推荐去找最新的代理地址，或者扩展为动态代理地址。随机代理开启请把下面注释去掉
+	
+	```python
+	# 代理，默认关闭
+    #'weiboZ.middlewares.DBDownloaderMiddleware.ProxyMiddleware': 543
+	```
 
 * Q4: 为什么抓了豆瓣的数据数据库中不存储。  
 	A4: 确认setting设置`ITEM_PIPELINES`为`weiboZ.pipelines.dbMongoPipeline`,并且数据库中豆瓣数据不是最新的。如果还有问题，日志级别设置为INFO看下爬虫统计结果，如下：

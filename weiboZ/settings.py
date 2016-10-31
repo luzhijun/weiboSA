@@ -29,7 +29,10 @@ USER_AGENTS = [
     "Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; fr) Presto/2.9.168 Version/11.52",
 ]
 # 代理地址，可以去http://www.ip181.com/找，及时更新验证
-#PROXIES = ["http://183.131.76.27:8888", "http://121.40.108.76:80", "http://123.160.143.111:8888", "http://111.201.239.27:81", "http://182.203.83.205:8888", "http://183.129.151.130:80", "http://123.123.19.190:81", "http://202.171.253.72:80", "http://122.72.32.74:80", "http://182.88.207.145:8123", "http://120.92.3.165:80", "http://106.75.176.4:80", "http://122.96.59.107:843", "http://218.3.177.36:8089", "http://182.37.22.192:8118", "http://140.255.17.169:8888", "http://122.5.224.189:8888", "http://115.236.75.201:80", "http://139.196.108.68:80", "http://113.3.74.103:8118", "http://122.72.32.88:80", "http://121.225.217.204:8888", "http://27.219.26.68:8888", "http://121.14.6.236:80", "http://119.28.19.222:8888", "http://42.96.129.41:8088", "http://117.28.255.84:80",]
+
+PROXIES = ["http://202.44.109.56:8080", "http://101.4.138.34:8888", "http://202.105.131.231:80", "http://192.169.175.145:8080", "http://119.115.79.1:8080", "http://59.37.161.126:80", "http://160.202.41.138:8080", "http://118.144.154.253:3128", "http://218.92.220.64:8080", "http://5.189.169.210:8080", "http://218.24.17.5:8888", "http://211.35.179.37:8080", "http://187.95.116.10:3128", "http://103.28.160.86:8081", "http://103.214.173.191:8080", "http://125.39.78.132:8888", "http://27.148.151.178:80", "http://175.181.118.143:8080", "http://36.42.32.117:8080", "http://210.13.73.133:8080",
+           "http://46.232.165.223:8080", "http://149.56.13.5:5555", "http://210.150.90.210:8080", "http://210.51.35.209:80", "http://201.204.47.70:8080", "http://212.174.6.68:3128", "http://210.242.179.103:8080", "http://218.14.121.229:9000", "http://115.217.251.4:8888", "http://200.29.191.149:3128", "http://200.123.9.123:8080", "http://210.175.248.164:8080", "http://187.108.32.75:3128", "http://110.77.234.105:8080", "http://190.63.172.206:8080", "http://95.80.98.41:8080", "http://197.33.174.217:8080", "http://27.148.151.175:80", "http://210.136.117.169:8080", "http://210.116.112.109:80", ]
+
 BOT_NAME = 'weiboZ'
 
 SPIDER_MODULES = ['weiboZ.spiders']
@@ -56,7 +59,7 @@ MONGO_DATABASE = {
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
-CONCURRENT_REQUESTS_PER_DOMAIN = 16
+#CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
@@ -83,7 +86,8 @@ DEFAULT_REQUEST_HEADERS = {
 DOWNLOADER_MIDDLEWARES = {
     'weiboZ.middlewares.DBDownloaderMiddleware.RandomUserAgent': 543,
     'scrapy.downloadermiddleware.useragent.UserAgentMiddleware': None,
-    #'weiboZ.middlewares.DBDownloaderMiddleware.ProxyMiddleware': 544
+    # 代理，默认关闭
+    #'weiboZ.middlewares.DBDownloaderMiddleware.ProxyMiddleware': 543
 }
 
 # Enable or disable extensions
